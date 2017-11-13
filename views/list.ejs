@@ -2,14 +2,11 @@
 
 <ul>
     <% for (var i = 0; i < todos.length; i++) { %>
-
     <li>
-        <a href= <%= "/delete/" + i %> >delete</a>
+        <a href="/delete/<%= + i %>">x</a>
         <%= todos[i] %>
     </li>
-
-<% } %>
-
+    <% } %>
 </ul>
 
 <form action="/create" method="post">
