@@ -5,8 +5,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 app.use(cookieSession({
-	name: "session",
-	keys: ['key1', 'key2']
+	secret: 'SUPERsekret'
 }));
 
 app.use(bodyParser.json());
@@ -15,17 +14,21 @@ app.use(bodyParser.urlencoded({extended: false}));
 var todos = ["first todo"];
 
 app.get('/', function(req, res) {
-	res.render('list.ejs', {todos: todos});
+	if(!req.session.todos) {
+		req.session.name = "vivien test";
+		req.session.todos = todos;
+	}
+	res.render('list.ejs', {todos: req.session.todos, name: req.session.name});
 });
 
 app.post('/create', function(req, res) {
-	todos.push(req.body.todo);
+	req.session.todos.push(req.body.todo);
 	res.redirect('/');
 });
 
 app.get('/delete/:index', function(req, res) {
-	todos.splice(req.params.index, 1);
+	req.session.todos.splice(req.params.index, 1);
 	res.redirect('/');
-})
+});
 
-app.listen(8080);
+app.listen(8090);
